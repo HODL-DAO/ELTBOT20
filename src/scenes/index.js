@@ -1,7 +1,5 @@
-import imageScene from './public/imageScene';
-import videoScene from './public/videoScene';
+import priceList from './public/priceList';
 
 export default {
-    imageScene,
-    videoScene,
+    priceList,
 };

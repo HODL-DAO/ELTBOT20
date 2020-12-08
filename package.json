@@ -1,7 +1,7 @@
 {
-  "name": "eltbot",
+  "name": "eltbot20",
   "version": "1.0.0",
-  "description": "ELTBOT + Wallet Auth",
+  "description": "ELTBOT20",
   "main": "index.js",
   "scripts": {
     "start": "babel-node index.js",

@@ -2,45 +2,54 @@ require('dotenv').config({path: __dirname + '/../.env'});
 // console.log('.....>>>>>>>.....', process.env.BOT_TOKEN);
 
 import Markup from "telegraf/markup";
-import Router from "telegraf/router";
-import Stage from "telegraf/stage";
-import Scene from "telegraf/scenes/base";
-
 import session from "telegraf/session";
-
+import Stage from "telegraf/stage";
+import Composer from "telegraf/composer";
+import Router from "telegraf/router";
 import { Telegraf } from 'telegraf';
+import WizardScene from 'telegraf/scenes/wizard';
 
-// create Stage
-const { leave } = Stage;
-const stage = new Stage();
-// stage.command('cancel', stage.leave());
+console.log('############## ', Markup.callbackButton)
 
-// Scenes
-const greeterScene = new Scene('greeterScene')
-greeterScene.enter((ctx) => ctx.reply('hi'))
-greeterScene.leave((ctx) => ctx.reply('Mkey, bye.'))
-greeterScene.hears(/hi/gi, leave())
-greeterScene.on('message', (ctx) => ctx.reply('Send `hi`'))
+const stepHandler = new Composer()
+stepHandler.action('next', (ctx) => {
+  ctx.reply('Step 2. Via inline button')
+  return ctx.wizard.next()
+})
+stepHandler.command('next', (ctx) => {
+  ctx.reply('Step 2. Via command')
+  return ctx.wizard.next()
+})
+stepHandler.use((ctx) => ctx.replyWithMarkdown('Press `Next` button or type /next'))
 
-console.log('........greeterScene..........', process.env.BOT_TOKEN);
+const superWizard = new WizardScene('super-wizard',
+  (ctx) => {
+    ctx.reply('Step 1', Markup.inlineKeyboard([
+      Markup.button('http://telegraf.js.org'),
+      Markup.callbackButton('➡️ Next', 'next')
+    ]))
+    return ctx.wizard.next()
+  },
+  stepHandler,
+  (ctx) => {
+    ctx.reply('Step 3')
+    return ctx.wizard.next()
+  },
+  (ctx) => {
+    ctx.reply('Step 4')
+    return ctx.wizard.next()
+  },
+  (ctx) => {
+    ctx.reply('Done')
+    return ctx.scene.leave()
+  }
+)
 
-// Scene registration
-stage.register(greeterScene);
-
-// Create the bot
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf(process.env.BOT_TOKEN)
+const stage = new Stage([superWizard], { default: 'super-wizard' })
 bot.use(session())
-console.log('..................');
-console.log('The Bot incarnated: ', bot);
-console.log('..................', greeterScene);
+bot.use(stage.middleware())
 
-// stage and scenes
-// bot.use(stage.middleware())
-bot.command('greeterScene', (ctx) => ctx.scene.enter('greeterScene'));
-
-bot.start((ctx) => {
-
-});
-
-
+console.log('............... ', bot)
 export default bot;
+// bot.launch()
