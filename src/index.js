@@ -8,22 +8,15 @@ import Composer from "telegraf/composer";
 import Router from "telegraf/router";
 import { Telegraf } from 'telegraf';
 
-const CoinGecko = require('coingecko-api');
-const CGClient = new CoinGecko();
-
+import { listPrices } from './utils';
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
 bot.command('price', (ctx) => {
-    console.log('............... ', CGClient)
-    var func = async() => {
-        let data = await CGClient.coins.fetchMarketChart('ethereum');
-
-        console.log('.....?????? data...... ', data)
-
-    };
-
-    func();
+    
+    let prices = listPrices(ctx)('ethereum');
+    
+    console.log('............... ', prices)
 });
 
 bot.use(session())

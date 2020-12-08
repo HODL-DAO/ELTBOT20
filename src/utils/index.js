@@ -1,5 +1,5 @@
-import listPrices from './lists/listOffers';
+import listPrices from './lists/listPrices';
 
-export default {
+export {
     listPrices,
 }
