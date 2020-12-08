@@ -1,53 +1,42 @@
+import Markup from "telegraf/markup";
+import Router from "telegraf/router";
+import Stage from "telegraf/stage";
+import Scene from "telegraf/scenes/base";
 
-import { 
-  Markup,
-  Router,
-  Scene,
-  Stage,
-  Telegraf,
+import session from "telegraf/session";
 
-  session,
-} from 'telegraf';
+import { Telegraf } from 'telegraf';
 
 // create Stage
 const { leave } = Stage;
+const stage = new Stage();
+// stage.command('cancel', stage.leave());
 
 // Scenes
-const greeter = new Scene('greeter')
-greeter.enter((ctx) => ctx.reply('hi'))
-greeter.leave((ctx) => ctx.reply('Mkey, bye.'))
-greeter.hears(/hi/gi, leave())
-greeter.on('message', (ctx) => ctx.reply('Send `hi`'))
+const greeterScene = new Scene('greeterScene')
+greeterScene.enter((ctx) => ctx.reply('hi'))
+greeterScene.leave((ctx) => ctx.reply('Mkey, bye.'))
+greeterScene.hears(/hi/gi, leave())
+greeterScene.on('message', (ctx) => ctx.reply('Send `hi`'))
 
-
-console.log('........greeter scene..........', greeter);
-
-// scene manager
-const stage = new Stage([imageScene, videoScene]);
-stage.command('cancel', leave());
+console.log('........greeterScene..........', process.env.BOT_TOKEN);
 
 // Scene registration
-stage.register(greeter);
+stage.register(greeterScene);
 
 // Create the bot
 const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.use(session())
 console.log('..................');
 console.log('The Bot incarnated: ', bot);
-console.log('..................', greeter);
+console.log('..................', greeterScene);
 
 // stage and scenes
-bot.use(stage.middleware())
-bot.command('greeter', (ctx) => ctx.scene.enter('greeter'));
+// bot.use(stage.middleware())
+bot.command('greeterScene', (ctx) => ctx.scene.enter('greeterScene'));
 
 bot.start((ctx) => {
-  let userFirstName = ctx.message.from.first_name;
-  let message = ` Is it you, ${userFirstName}, that summoned the BotGod!?`
 
-  let options = Markup.inlineKeyboard([
-        Markup.callbackButton('Extract from 🖼️', 'extractFromImage'),
-        Markup.callbackButton('Extract from 🎬', 'extractFromVideo'),  ])
-  .extra();
 });
 
 
