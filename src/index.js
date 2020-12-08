@@ -1,3 +1,6 @@
+require('dotenv').config({path: __dirname + '/../.env'});
+// console.log('.....>>>>>>>.....', process.env.BOT_TOKEN);
+
 import Markup from "telegraf/markup";
 import Router from "telegraf/router";
 import Stage from "telegraf/stage";
