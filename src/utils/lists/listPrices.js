@@ -1,9 +1,5 @@
 exchange.on('listPrices', async (ctx) => {
-    await (fetch('https://api.idex.market/returnOrderBook', {
-        method: 'POST',
-        body: JSON.stringify({
-            market: 'ETH_ELTCOIN'
-        })
+    await (f)
     }).then(async (res) => {
         res = await (res.json());
 

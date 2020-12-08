@@ -15,6 +15,7 @@
   "author": "HODL-DAO",
   "license": "UNLICENSED",
   "dependencies": {
+    "coingecko-api": "^1.0.10",
     "dotenv": "^8.2.0",
     "telegraf": "^3.21.2"
   },
