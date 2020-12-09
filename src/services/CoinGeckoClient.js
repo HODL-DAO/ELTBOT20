@@ -3,7 +3,7 @@ const CoinGecko = new CGApi();
 
 const getTokenInfo = (tokenID, params=null) => {
     return async () => {
-        await CGClient.coins.fetch(tokenID, {
+        await CoinGecko.coins.fetch(tokenID, {
             tickers: true, // true
             market_data: true, // true
             community_data: true, // true
@@ -13,7 +13,7 @@ const getTokenInfo = (tokenID, params=null) => {
             ...params,
         })
         .then(async (res) => {
-            console.log('getTokenInfo for ', tokenID, ' : ', res);
+            console.dir(res, {depth: null});
             return res;
         })
         .catch(err => {
@@ -29,4 +29,4 @@ const CoinGeckoClient = () => {
     }
 }
 
-export default CoinGeckoClient;
+export default new CoinGeckoClient();
