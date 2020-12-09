@@ -13,12 +13,9 @@ const bot = new Telegraf(process.env.BOT_TOKEN)
 
 bot.command('price', async (ctx) => {
   let data = await CoinGeckoClient.getTokenInfo('eltcoin');
-  // console.log('............... ', data);
-  // TODO fix async await
-  await data().then((res) => {
-    ctx.replyWithMarkdown(foo.data.market_data)
-  });
-  // console.dir(data(), {depth: null});
+  // console.log('............... ', data.tickers);
+
+  ctx.replyWithMarkdown(data.tickers)
 
 });
 
