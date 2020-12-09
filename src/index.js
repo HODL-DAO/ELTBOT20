@@ -6,6 +6,8 @@ import { registerHandlers } from "./handlers";
 import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
 import { attachUser } from "./middleware/attachUser";
+import { CoinGeckoClient } from "./services";
+import { printStatsCommand } from './handlers/stats';
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
@@ -51,7 +53,10 @@ bot.catch((err, ctx) => {
   console.error(`Ooops, encountered an error for ${ctx.updateType}`, err);
 });
 
+
 bot.launch();
+
+bot.hears('/price', printStatsCommand);
 
 console.log("eltcoin_beta_bot started! ");
 

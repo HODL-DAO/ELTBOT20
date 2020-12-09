@@ -4,11 +4,8 @@ import {
 
 import { COMMANDS } from "../utils";
 
-// let data = await CoinGeckoClient.getTokenInfo('eltcoin');
-
-async function printStatsCommand(ctx) {
+export async function printStatsCommand(ctx) {
   const info =  await CoinGeckoClient.getTokenInfo('eltcoin')
-
   const priceInfo = info.tickers[0]['converted_last'];
 
   console.log(priceInfo['usd'])

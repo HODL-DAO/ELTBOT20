@@ -10,7 +10,9 @@ export default async function registerMenu(bot) {
   //register Alert Menu action
   bot.action("Alerts", switchToAlertMenu);
   //register Stats Menu action
-  bot.action("Stats", switchToStatsMenu);
+  bot.command("Stats", switchToStatsMenu);
+
+  // bot.command('price', switchToStatsMenu);
 }
 
 // TODO: handle this with proper locale
