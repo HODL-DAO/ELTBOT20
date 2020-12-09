@@ -4,10 +4,6 @@ import {
 
 import { COMMANDS } from "../utils";
 
-export default async function registerStats(bot) {
-  bot.command(COMMANDS.STATS, printStatsCommand);
-}
-  
 // let data = await CoinGeckoClient.getTokenInfo('eltcoin');
 
 async function printStatsCommand(ctx) {
@@ -20,8 +16,6 @@ async function printStatsCommand(ctx) {
     ).toFixed(0),
   ).toLocaleString();
 
-  console.log("running stat command");
-
   console.dir({
     data: {
       priceInUSD,
@@ -32,7 +26,7 @@ async function printStatsCommand(ctx) {
     return `<b>🅑 $${params[0]} ${
         params[2] >= 0 ? `✅ +${params[2]}` : `🔻 ${params[2]}`
       }%        
-    `        
+    </b>`        
   };
 
   return ctx.replyWithHTML(
@@ -41,3 +35,8 @@ async function printStatsCommand(ctx) {
     ]),
   );
 }
+
+export default async function registerStats(bot) {
+  bot.command(COMMANDS.STATS, printStatsCommand);
+}
+  
