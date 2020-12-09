@@ -1,5 +1,5 @@
-import listPrices from './lists/listPrices';
+import { COMMANDS } from './consts';
 
 export {
-    listPrices,
+    COMMANDS
 }
