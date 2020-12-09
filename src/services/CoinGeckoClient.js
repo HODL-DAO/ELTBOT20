@@ -12,7 +12,7 @@ const getTokenInfo = async (tokenID, params=null) => {
         ...params,
     })
     .then(async (res) => {
-        console.dir(res.data.tickers, {depth: null});
+        // console.dir(res.data.tickers, {depth: null});
         return res.data;
     })
     .catch(err => {
