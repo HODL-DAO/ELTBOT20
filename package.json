@@ -15,8 +15,10 @@
   "author": "HODL-DAO",
   "license": "UNLICENSED",
   "dependencies": {
+    "bignumber.js": "^9.0.1",
     "coingecko-api": "^1.0.10",
     "dotenv": "^8.2.0",
+    "ethereumjs-units": "^0.2.0",
     "mongoose": "^5.11.5",
     "telegraf": "^3.21.2",
     "telegraf-ratelimit": "^2.0.0"
