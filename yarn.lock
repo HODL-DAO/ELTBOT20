@@ -1005,6 +1005,11 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+fancy-canvas@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/fancy-canvas/-/fancy-canvas-0.2.2.tgz#33fd4976724169a1eda5015f515a2a1302d1ec91"
+  integrity sha512-50qi8xA0QkHbjmb8h7XQ6k2fvD7y/yMfiUw9YTarJ7rWrq6o5/3CCXPouYk+XSLASvvxtjyiQLRBFt3qkE3oyA==
+
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
@@ -1391,6 +1396,13 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
+
+lightweight-charts@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/lightweight-charts/-/lightweight-charts-3.2.0.tgz#4b34f07bcb46940ef64393b58a65eb2a08287184"
+  integrity sha512-MLyg87IQITC7vSd14/MaHi0cJFkzNEtHy2t5ZcgxeM4stglz7ceCIQn56iNWAE06J8Lsxb5lMTF9eEk86XUeLA==
+  dependencies:
+    fancy-canvas "0.2.2"
 
 lodash@^4.17.4:
   version "4.17.20"
