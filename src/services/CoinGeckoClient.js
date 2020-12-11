@@ -1,7 +1,7 @@
 const CGApi = require('coingecko-api');
 const CoinGecko = new CGApi();
 
-const getTokenInfo = async (tokenID, params=null) => {
+const getTokenInfo = async (tokenID, params = null) => {
     return await CoinGecko.coins.fetch(tokenID, {
         tickers: true, // true
         market_data: true, // true
@@ -11,13 +11,13 @@ const getTokenInfo = async (tokenID, params=null) => {
         sparkline: false, // false
         ...params,
     })
-    .then(async (res) => {
-        // console.dir(res.data.tickers, {depth: null});
-        return res.data;
-    })
-    .catch(err => {
-        console.log('Error: ', err)
-    })
+        .then(async (res) => {
+            // console.dir(res.data.tickers, {depth: null});
+            return res.data;
+        })
+        .catch(err => {
+            console.log('Error: ', err)
+        })
 }
 
 const CoinGeckoClient = () => {

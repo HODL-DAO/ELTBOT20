@@ -19,7 +19,9 @@
     "coingecko-api": "^1.0.10",
     "dotenv": "^8.2.0",
     "ethereumjs-units": "^0.2.0",
+    "lightweight-charts": "^3.2.0",
     "mongoose": "^5.11.5",
+    "puppeteer": "^5.5.0",
     "telegraf": "^3.21.2",
     "telegraf-ratelimit": "^2.0.0"
   },
