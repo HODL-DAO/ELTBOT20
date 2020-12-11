@@ -9,7 +9,7 @@ import { attachUser } from "./middleware/attachUser";
 import { CoinGeckoClient } from "./services";
 import { printStatsCommand } from './handlers/stats';
 
-const bot = new Telegraf(process.env.BOT_TOKEN)
+const bot = new Telegraf(process.env.BOT_TOKEN_DEV)
 
 // Set limit to 1 message per 3 seconds
 const limitConfig = {
