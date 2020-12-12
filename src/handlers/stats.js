@@ -1,6 +1,6 @@
 import {
   CoinGeckoClient,
-  ChartsService,
+  PuppeteerService,
 } from "../services";
 
 import * as EthUnits from 'ethereumjs-units';
@@ -13,9 +13,9 @@ export async function printStatsCommand(ctx) {
   const volumeInfo = info.tickers[0]['converted_volume'];
   const marketCap = info['market_data']['market_cap'];
 
-  console.dir(' ----- info ----- ', info);
+  // console.dir(' ----- info ----- ', info);
 
-  var chart = ChartsService.EltMarketCandles();
+  PuppeteerService.createHtmlDoc();
 
   const numberFormatOptions = {
     //  currency: null, // string;
@@ -42,7 +42,7 @@ export async function printStatsCommand(ctx) {
   };
 
   // TODO: move this to factory 
-  const priceInSatoshi = Number((priceInfo.btc * 10 ^ 8).toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
+  const priceInSatoshi = Number((priceInfo.btc * 10 ^ 8)).toLocaleString('en-EN', numberFormatOptions);
   const priceInBTC = Number(priceInfo.btc.toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
   const priceInWei = EthUnits.convert(priceInfo.eth.toFixed(18), 'eth', 'wei').toLocaleString('en-EN', numberFormatOptions);
   const priceInETH = Number(priceInfo.eth.toFixed(18)).toLocaleString('en-EN', numberFormatOptions);

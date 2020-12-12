@@ -1,23 +1,6 @@
 import { createChart, } from 'lightweight-charts';
-import jsdom from 'jsdom';
-import TurndownService from 'turndown';
 
-const { JSDOM } = jsdom;
-
-var htmlDoc = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
-
-if (typeof window === 'undefined') {
-    global.window = htmlDoc.window;
-}
-
-global.document = window.document;
-console.dir(document, { depth: null });
-
-function getChart() {
-    window.requestAnimationFrame = (p) => {
-        console.log(' window.requestAnimationFrame ', p)
-    };
-    console.log(' ??????????????????????? ', window.requestAnimationFrame);
+function getChart(htmlDoc) {
 
     return createChart(htmlDoc, {
         width: 600,
