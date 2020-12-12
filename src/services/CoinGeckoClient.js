@@ -26,4 +26,4 @@ const CoinGeckoClient = () => {
     }
 }
 
-export default new CoinGeckoClient();
+export default CoinGeckoClient();

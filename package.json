@@ -2,10 +2,10 @@
   "name": "eltbot20",
   "version": "1.0.0",
   "description": "ELTBOT20",
-  "main": "index.js",
+  "main": "src/index.js",
+  "type": "module",
   "scripts": {
-    "start": "babel-node index.js",
-    "watch": "supervisor -x babel-node index.js",
+    "start": "node -r esm src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,8 +18,10 @@
     "bignumber.js": "^9.0.1",
     "coingecko-api": "^1.0.10",
     "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
     "ethereumjs-units": "^0.2.0",
     "fancy-canvas": "^0.2.2",
+    "jsdom": "^16.4.0",
     "lightweight-charts": "^3.2.0",
     "mongoose": "^5.11.5",
     "telegraf": "^3.21.2",

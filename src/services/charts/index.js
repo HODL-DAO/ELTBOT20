@@ -1,6 +1,6 @@
 import CandleSeries from './CandleSeries';
 
-const chartParentElem = document.createDocumentFragment();
+// const chartParentElem = document.createDocumentFragment();
 
 export default {
     EltMarketCandles: (data) => {

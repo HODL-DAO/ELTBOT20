@@ -1,10 +1,13 @@
 import { createChart } from 'lightweight-charts';
+import { JSDOM } from 'jsdom';
+console.log('JSDOM ', JSDOM);
+
+const htmlDoc = new JSDOM(`<!DOCTYPE html><body></body>`);
+console.log('!!!!!! parent ', htmlDoc);
 
 function getChart(p) {
-    let parent = document.body;
-    console.log('!!!!!! parent ', parent);
 
-    return createChart(parent, {
+    return createChart(htmlDoc.body, {
         width: 600,
         height: 300,
         layout: {
@@ -57,8 +60,8 @@ export default function () {
     return ({
         getRawChart: getChart,
         setSeriesData: setSeriesData,
-        getEmbedableChart: (parent, data, options) => {
-            let chart = getChart(parent);
+        getEmbedableChart: (data, options) => {
+            let chart = getChart();
             console.dir(chart, { depth: 0 });
             setSeriesData(data, options);
 
