@@ -19,6 +19,7 @@
     "coingecko-api": "^1.0.10",
     "dotenv": "^8.2.0",
     "ethereumjs-units": "^0.2.0",
+    "fancy-canvas": "^0.2.2",
     "lightweight-charts": "^3.2.0",
     "mongoose": "^5.11.5",
     "telegraf": "^3.21.2",
