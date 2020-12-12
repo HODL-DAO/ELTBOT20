@@ -30,7 +30,7 @@ export async function printStatsCommand(ctx) {
     return (
       `
       <b> PRICE 💸 </b>
-      <i> \r\n </i>
+      \r\n
       <b>1 ELT = ฿ ${params[0]} Satoshi  </b>
       <b>1 ELT = ฿ ${params[1]} BTC  </b>
       <b>1 ELT = ♦️ ${params[2]} Wei  </b>
