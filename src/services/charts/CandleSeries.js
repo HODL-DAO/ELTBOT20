@@ -1,13 +1,25 @@
-import { createChart } from 'lightweight-charts';
-import { JSDOM } from 'jsdom';
-console.log('JSDOM ', JSDOM);
+import { createChart, } from 'lightweight-charts';
+import jsdom from 'jsdom';
+import TurndownService from 'turndown';
 
-const htmlDoc = new JSDOM(`<!DOCTYPE html><body></body>`);
-console.log('!!!!!! parent ', htmlDoc);
+const { JSDOM } = jsdom;
 
-function getChart(p) {
+var htmlDoc = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
 
-    return createChart(htmlDoc.body, {
+if (typeof window === 'undefined') {
+    global.window = htmlDoc.window;
+}
+
+global.document = window.document;
+console.dir(document, { depth: null });
+
+function getChart() {
+    window.requestAnimationFrame = (p) => {
+        console.log(' window.requestAnimationFrame ', p)
+    };
+    console.log(' ??????????????????????? ', window.requestAnimationFrame);
+
+    return createChart(htmlDoc, {
         width: 600,
         height: 300,
         layout: {
@@ -22,9 +34,6 @@ function getChart(p) {
                 color: 'rgba(197, 203, 206, 0.5)',
             },
         },
-        crosshair: {
-            mode: LightweightCharts.CrosshairMode.Normal,
-        },
         rightPriceScale: {
             borderColor: 'rgba(197, 203, 206, 0.8)',
         },
@@ -34,7 +43,7 @@ function getChart(p) {
     });
 };
 
-function addCandleSeries(chart, options) {
+function addCandleSeries(chart) {
     let defOpts = {
         upColor: 'rgba(255, 144, 0, 1)',
         downColor: '#000',
@@ -45,14 +54,13 @@ function addCandleSeries(chart, options) {
     };
     return chart.addCandlestickSeries({
         ...defOpts,
-        ...options,
     });
 };
 
-function setSeriesData(data, options) {
-    let series = addCandleSeries(chart,)
-
-    console.log('?????', series.setData(data));
+function setSeriesData(chart, data) {
+    let series = addCandleSeries(chart);
+    console.log('?????', data);
+    series.setData(data);
 }
 
 export default function () {
@@ -60,10 +68,14 @@ export default function () {
     return ({
         getRawChart: getChart,
         setSeriesData: setSeriesData,
-        getEmbedableChart: (data, options) => {
+        getEmbedableChart: (data) => {
             let chart = getChart();
             console.dir(chart, { depth: 0 });
-            setSeriesData(data, options);
+            // setSeriesData(chart, data);
+
+            // var turndownService = new TurndownService();
+            // var markdownDoc = new turndownService.turndown(htmlDoc);
+            // console.log(' ----- markdownDoc ----- ', markdownDoc);
 
             return chart;
         },

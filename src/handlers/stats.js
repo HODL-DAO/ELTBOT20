@@ -1,5 +1,6 @@
 import {
-  CoinGeckoClient
+  CoinGeckoClient,
+  ChartsService,
 } from "../services";
 
 import * as EthUnits from 'ethereumjs-units';
@@ -12,7 +13,9 @@ export async function printStatsCommand(ctx) {
   const volumeInfo = info.tickers[0]['converted_volume'];
   const marketCap = info['market_data']['market_cap'];
 
-  // console.dir(marketCap.usd)
+  console.dir(' ----- info ----- ', info);
+
+  var chart = ChartsService.EltMarketCandles();
 
   const numberFormatOptions = {
     //  currency: null, // string;
@@ -22,7 +25,6 @@ export async function printStatsCommand(ctx) {
     minimumFractionDigits: 8, // number;
     maximumFractionDigits: 18, // number;
   }
-
 
   const htmlString = (params = []) => {
     return (
