@@ -67,7 +67,11 @@ async function createHtmlDoc() {
 
     // if (AUTO_TAB) {
     await page.waitForTimeout(1000);
-    await page.keyboard.press('Tab');
+    await page.$eval('#retrowaveScene', e => {
+        console.log(' @@@@@@@@@@@@@@ ', e)
+        e.click()
+        page.keyboard.press('Tab');
+    });
     // }
 };
 

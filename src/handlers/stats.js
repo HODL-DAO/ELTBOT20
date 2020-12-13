@@ -8,41 +8,58 @@ import * as EthUnits from 'ethereumjs-units';
 import { COMMANDS } from "../utils";
 
 export async function printStatsCommand(ctx) {
+
+  const getHtmlString = (params) => {
+    let dateTime = new Date();
+
+    if (!params) {
+      return '🤔 checking...';
+    }
+
+    return (
+      `
+      <b> 📈 ELCOIN PRICE DATA 💸 </b>
+      <b>${dateTime.toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' })} on ${dateTime.toLocaleDateString('en-US')} </b>
+      <b>
+        1 ELT / ฿ ${params[0]} Satoshi
+        1 ELT / Ξ ${params[3]} ETH
+        1 ELT / $ ${params[4]} USD  
+      </b><b>
+        Mkt Cap = $ ${params[5]}
+        24h Volume = $ ${params[6]} 
+      </b>
+      \r
+      `);
+  };
+
+  // TODO: move this to a LoadingIndicator component
+  let replyBody = await ctx.replyWithHTML(getHtmlString());
+  console.dir(replyBody, { depth: null });
+
   const info = await CoinGeckoClient.getTokenInfo('eltcoin')
   const priceInfo = info.tickers[0]['converted_last'];
-  const volumeInfo = info.tickers[0]['converted_volume'];
   const marketCap = info['market_data']['market_cap'];
+  const volumeInfo = info.tickers[0]['converted_volume'];
 
-  // console.dir(' ----- info ----- ', info);
+  // console.dir(info);
 
-  PuppeteerService.createHtmlDoc();
+  // TODO: fix this
+  // PuppeteerService.createHtmlDoc();
 
   const numberFormatOptions = {
-    //  currency: null, // string;
-    //  currencyDisplay: null, // string;
     useGrouping: false, // boolean;
     minimumIntegerDigits: 1, // number;
     minimumFractionDigits: 8, // number;
     maximumFractionDigits: 18, // number;
   }
 
-  const htmlString = (params = []) => {
-    return (
-      `
-      <b> PRICE 💸 </b>
-      \r\n
-      <b>1 ELT = ฿ ${params[0]} Satoshi  </b>
-      <b>1 ELT = ฿ ${params[1]} BTC  </b>
-      <b>1 ELT = ♦️ ${params[2]} Wei  </b>
-      <b>1 ELT = ♦️ ${params[3]} ETH  </b>
-      <b>1 ELT = $ ${params[4]} USD  </b>
-      <b>Mkt Cap = $ ${params[5]} </b>
-      <b>24h Volume = $ ${params[6]} </b>
-    `);
+  const getPriceInSatoshi = (val) => {
+    let sat = Number(val.toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
+    return sat.replace(/0/g, '').replace(/./, '');
   };
 
   // TODO: move this to factory 
-  const priceInSatoshi = Number((priceInfo.btc * 10 ^ 8)).toLocaleString('en-EN', numberFormatOptions);
+  const priceInSatoshi = getPriceInSatoshi(priceInfo.btc);
   const priceInBTC = Number(priceInfo.btc.toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
   const priceInWei = EthUnits.convert(priceInfo.eth.toFixed(18), 'eth', 'wei').toLocaleString('en-EN', numberFormatOptions);
   const priceInETH = Number(priceInfo.eth.toFixed(18)).toLocaleString('en-EN', numberFormatOptions);
@@ -54,14 +71,14 @@ export async function printStatsCommand(ctx) {
     priceInWei,
     priceInETH,
     priceInUSD,
-    volumeInfo.usd,
     marketCap.usd,
+    volumeInfo.usd,
   ];
 
   console.dir(params, { depth: null });
 
   return ctx.replyWithHTML(
-    htmlString(params)
+    getHtmlString(params)
   );
 }
 
