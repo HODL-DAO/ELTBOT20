@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+// import puppeteer from 'puppeteer';
 import ChartsService from './charts';
 
 const padding = 15;
@@ -7,7 +7,7 @@ const url = "https://www.hodldao.xyz";
 const AUTO_TAB = true;
 
 async function createHtmlDoc() {
-    const browser = await puppeteer.launch({ headless: false })
+    const browser = null; // await puppeteer.launch({ headless: false })
     const page = (await browser.pages())[0];
 
     console.log(' browser page ', page);
