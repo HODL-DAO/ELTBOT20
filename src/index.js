@@ -2,12 +2,10 @@ require('dotenv').config({ path: __dirname + '/../.env' });
 // console.log('.....>>>>>>>.....', process.env.BOT_TOKEN);
 import Telegraf from "telegraf";
 
-import { registerHandlers } from "./handlers";
+import { handlers } from "./handlers";
 import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
 import { attachUser } from "./middleware/attachUser";
-import { CoinGeckoClient } from "./services";
-import { printStatsCommand } from './handlers/stats';
 
 let bot = {};
 if (process.env.IS_PROD === true) {
@@ -51,17 +49,28 @@ bot.use(rateLimit(limitConfig));
 bot.use(attachUser);
 
 // register all bot commands, actions, etc
-registerHandlers(bot);
+handlers.stats.register(bot);
 
 // register global error handler to prevent the bot from stopping after an exception
 bot.catch((err, ctx) => {
   console.error(`Ooops, encountered an error for ${ctx.updateType}`, err);
 });
 
-
 bot.launch();
 
-bot.hears('/price', printStatsCommand);
+bot.hears('/price', async (ctx) => {
+
+  console.dir(
+    ctx.reply('🤔 checking...')
+      .then((res) => {
+        console.log(' res ', res)
+
+        ctx.deleteMessage(res['message_id']);
+
+        handlers.stats.printStats(ctx);
+      })
+  );
+});
 
 console.log("eltcoin_beta_bot started! ");
 

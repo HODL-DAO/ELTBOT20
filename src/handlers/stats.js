@@ -12,10 +12,6 @@ export async function printStatsCommand(ctx) {
   const getHtmlString = (params) => {
     let dateTime = new Date();
 
-    if (!params) {
-      return '🤔 checking...';
-    }
-
     return (
       `
       <b> 📈 ELCOIN PRICE DATA 💸 </b>
@@ -32,15 +28,10 @@ export async function printStatsCommand(ctx) {
       `);
   };
 
-  // TODO: move this to a LoadingIndicator component
-  let replyBody = await ctx.replyWithHTML(getHtmlString());
-  console.dir(replyBody, { depth: null });
-
   const info = await CoinGeckoClient.getTokenInfo('eltcoin')
   const priceInfo = info.tickers[0]['converted_last'];
   const marketCap = info['market_data']['market_cap'];
   const volumeInfo = info.tickers[0]['converted_volume'];
-
   // console.dir(info);
 
   // TODO: fix this
@@ -74,14 +65,11 @@ export async function printStatsCommand(ctx) {
     marketCap.usd,
     volumeInfo.usd,
   ];
+  // console.dir(params, { depth: null });
 
-  console.dir(params, { depth: null });
-
-  return ctx.replyWithHTML(
-    getHtmlString(params)
-  );
+  return await ctx.replyWithHTML(getHtmlString(params));
 }
 
 export default async function registerStats(bot) {
-  bot.command(COMMANDS.STATS, printStatsCommand);
+  return bot.command(COMMANDS.STATS, printStatsCommand);
 }
