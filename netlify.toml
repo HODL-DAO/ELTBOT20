@@ -1,0 +1,4 @@
+[build]
+  publish = "src"
+  command = "netlify-lambda build functions"
+  functions = "src/index"

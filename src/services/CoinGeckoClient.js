@@ -1,8 +1,8 @@
-const CGApi = require('coingecko-api');
-const CoinGecko = new CGApi();
+import CoinGecko from 'coingecko-api';
+const CoinGeckoClient = new CoinGecko();
 
 const getTokenInfo = async (tokenID, params = null) => {
-    return await CoinGecko.coins.fetch(tokenID, {
+    return await CoinGeckoClient.coins.fetch(tokenID, {
         tickers: true, // true
         market_data: true, // true
         community_data: true, // true
@@ -20,10 +20,10 @@ const getTokenInfo = async (tokenID, params = null) => {
         })
 }
 
-const CoinGeckoClient = () => {
+const CoinGeckoService = () => {
     return {
         getTokenInfo,
     }
 }
 
-export default CoinGeckoClient();
+export default CoinGeckoService();

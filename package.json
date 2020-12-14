@@ -2,11 +2,14 @@
   "name": "eltbot20",
   "version": "1.0.0",
   "description": "ELTBOT20",
-  "main": "src/index.js",
+  "main": "src/",
   "type": "module",
   "scripts": {
-    "start": "node -r esm src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node -r esm src/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "netlify-lambda install",
+    "buildNetlify": "netlify-lambda build functions",
+    "devNetlify": "netlify-lambda serve functions"
   },
   "repository": {
     "type": "git",
@@ -21,15 +24,16 @@
     "esm": "^3.2.25",
     "ethereumjs-units": "^0.2.0",
     "fancy-canvas": "^0.2.2",
+    "is-promise": "^4.0.0",
     "jsdom": "^16.4.0",
     "lightweight-charts": "^3.2.0",
     "mongoose": "^5.11.5",
-    "puppeteer": "^5.5.0",
     "telegraf": "^3.21.2",
     "telegraf-ratelimit": "^2.0.0",
     "turndown": "^7.0.0"
   },
   "devDependencies": {
+    "netlify-lambda": "^2.0.2",
     "supervisor": "^0.12.0"
   }
 }

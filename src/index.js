@@ -1,5 +1,9 @@
-require('dotenv').config({ path: __dirname + '/../.env' });
-// console.log('.....>>>>>>>.....', process.env.BOT_TOKEN);
+
+
+
+import dotenv from 'dotenv';
+dotenv.config();
+
 import Telegraf from "telegraf";
 
 import { handlers } from "./handlers";
