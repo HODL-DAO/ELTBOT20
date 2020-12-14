@@ -15,7 +15,8 @@
 
 ## Local development
 
-Make sure you have `babel-node` installed.
+~~Make sure you have `babel-node` installed.~~
+babel has been removed in favour of [esm](https://github.com/standard-things/esm) 
 
 ```bash
 # Install dependencies

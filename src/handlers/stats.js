@@ -28,7 +28,7 @@ export async function printStatsCommand(ctx) {
         Mkt Cap = $ ${params[5]}
         24h Volume = $ ${params[6]} 
       </b>
-      \r
+      \r\n
       `);
   };
 
