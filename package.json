@@ -8,8 +8,8 @@
     "start": "node -r esm src/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "netlify-lambda install",
-    "buildNetlify": "netlify-lambda build functions",
-    "devNetlify": "netlify-lambda serve functions"
+    "buildNetlify": "netlify-lambda build src",
+    "devNetlify": "netlify-lambda serve src"
   },
   "repository": {
     "type": "git",
