@@ -1,9 +1,9 @@
 import { COMMANDS, CACHE_KEYS } from './consts';
-import { createCacheInstance, cache } from './cache'
+import { createCacheInstance, getCache } from './cache'
 
 export {
     COMMANDS,
     CACHE_KEYS,
-    cache,
+    getCache,
     createCacheInstance,
 }

@@ -5,10 +5,11 @@ import NodeCache from "node-cache";
  * allows CoinGeckoService to import cache without importing
  * CacheService that already requires it
  */
-export let cache = null;
+let cache = null;
 
 export function createCacheInstance() {
     cache = new NodeCache({ stdTTL: 30 });
-    console.dir(cache)
 };
+
+export const getCache = () => { cache };
 

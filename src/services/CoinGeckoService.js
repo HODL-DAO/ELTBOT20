@@ -1,18 +1,21 @@
 import CoinGecko from 'coingecko-api';
 const CoinGeckoClient = new CoinGecko();
-import { CACHE_KEYS, cache } from '../utils';
+import { CACHE_KEYS, getCache } from '../utils';
+
+let cache = getCache();
+console.log(' #####@@@@@@@@@@@##### ');
+console.dir(cache);
+
 
 const getTokenInfo = async (tokenID, params = null) => {
     try {
-        let tokensCache = cache.get(CACHE_KEYS.TOKENS);
-
+        cache = getCache();
         console.log(' ########## ');
-        console.dir(tokensCache);
+        console.dir(cache);
+
+        let tokensCache = {};
 
         if (!tokensCache || !tokensCache[tokenID]) {
-            if (!tokensCache) {
-                tokensCache
-            }
             await CoinGeckoClient.coins.fetch(tokenID, {
                 tickers: true, // true
                 market_data: true, // true
@@ -23,12 +26,15 @@ const getTokenInfo = async (tokenID, params = null) => {
                 ...params,
             })
                 .then(async (res) => {
-                    console.log(' ########## ');
-                    console.dir(CACHE_KEYS.TOKENS);
-                    console.log(' ########## ');
-                    console.dir(res);
+                    console.log(' ########## cache.keys ');
+                    // cache?.set(CACHE_KEYS.PRICE, price, env.CACHE_INTERVAL);
+                    // console.dir(cache.get(CACHE_KEYS.TOKENS));
+                    // console.dir(cache.keys());
 
-                    cache[CACHE_KEYS.TOKENS].set(
+                    // console.log(' ########## ');
+                    // console.dir(res);
+
+                    cache.set(
                         tokenID,
                         res.data,
                         process.env.CACHE_INTERVAL
@@ -39,21 +45,12 @@ const getTokenInfo = async (tokenID, params = null) => {
                 .catch(err => {
                     console.log('Error: ', err)
                 });
-
-        }
-        if (!tokenInfo) {
-            throw new Error(`failed to get info for ${tokenID}`);
         }
     } catch (error) {
         console.error(error);
     }
-    return tokenInfo;
 }
 
-export const CoinGeckoService = () => {
-    return {
-        getTokenInfo,
-    }
+export default {
+    getTokenInfo,
 }
-
-export default CoinGeckoService();
