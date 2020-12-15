@@ -128,3 +128,5 @@ jetificableGroups.json
 
 # DOTENV
 .env
+# Local Netlify folder
+.netlify
