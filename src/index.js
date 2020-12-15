@@ -1,16 +1,12 @@
-
-
-
 import dotenv from 'dotenv';
 dotenv.config();
 
 import Telegraf from "telegraf";
-
 import { handlers } from "./handlers";
 import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
 import { attachUser } from "./middleware/attachUser";
-import { initCacheInstance } from './utils';
+import { createCacheInstance } from './utils';
 
 let bot = {};
 if (process.env.IS_PROD === true) {
@@ -47,8 +43,8 @@ mongoose.connect(
 
 mongoose.set("useCreateIndex", true);
 
-// init cache
-initCacheInstance();
+// create cache
+createCacheInstance();
 
 // rate limit
 bot.use(rateLimit(limitConfig));

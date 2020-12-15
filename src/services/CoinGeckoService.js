@@ -50,7 +50,7 @@ const getTokenInfo = async (tokenID, params = null) => {
     return tokenInfo;
 }
 
-const CoinGeckoService = () => {
+export const CoinGeckoService = () => {
     return {
         getTokenInfo,
     }

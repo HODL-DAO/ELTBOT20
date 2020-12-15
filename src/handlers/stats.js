@@ -1,7 +1,4 @@
-import {
-  CoinGeckoClient,
-  // PuppeteerService,
-} from "../services";
+import { CoinGeckoService } from "../services";
 
 import * as EthUnits from 'ethereumjs-units';
 
@@ -28,7 +25,7 @@ export async function printStatsCommand(ctx) {
       `);
   };
 
-  const info = await CoinGeckoClient.getTokenInfo('eltcoin')
+  const info = await CoinGeckoService.getTokenInfo('eltcoin')
   const priceInfo = info.tickers[0]['converted_last'];
   const marketCap = info['market_data']['market_cap'];
   const volumeInfo = info.tickers[0]['converted_volume'];

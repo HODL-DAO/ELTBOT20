@@ -1,5 +1,6 @@
 import NodeCache from "node-cache";
-import CoinGeckoService from "./";
+import { CoinGeckoService } from "./CoinGeckoService";
+console.log(' ............. ', CoinGeckoService)
 
 let cache;
 
