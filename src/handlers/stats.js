@@ -4,7 +4,22 @@ import * as EthUnits from 'ethereumjs-units';
 
 import { COMMANDS } from "../utils";
 
+
+const numberFormatOptions = {
+  useGrouping: false, // boolean;
+  minimumIntegerDigits: 1, // number;
+  minimumFractionDigits: 8, // number;
+  maximumFractionDigits: 18, // number;
+}
+
+const getPriceInSatoshi = (val) => {
+  let sat = Number(val.toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
+  return sat.replace(/0/g, '').replace(/./, '');
+};
+
 export async function printStatsCommand(ctx) {
+
+  let info = await CoinGeckoService.getTokenInfo('eltcoin')
 
   const getHtmlString = (params) => {
     let dateTime = new Date();
@@ -25,26 +40,12 @@ export async function printStatsCommand(ctx) {
       `);
   };
 
-  const info = await CoinGeckoService.getTokenInfo('eltcoin')
-  const priceInfo = info.tickers[0]['converted_last'];
-  const marketCap = info['market_data']['market_cap'];
-  const volumeInfo = info.tickers[0]['converted_volume'];
-  // console.dir(info);
+  let priceInfo = info.tickers[0]['converted_last'];
+  let marketCap = info['market_data']['market_cap'];
+  let volumeInfo = info.tickers[0]['converted_volume'];
 
   // TODO: fix this
   // PuppeteerService.createHtmlDoc();
-
-  const numberFormatOptions = {
-    useGrouping: false, // boolean;
-    minimumIntegerDigits: 1, // number;
-    minimumFractionDigits: 8, // number;
-    maximumFractionDigits: 18, // number;
-  }
-
-  const getPriceInSatoshi = (val) => {
-    let sat = Number(val.toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
-    return sat.replace(/0/g, '').replace(/./, '');
-  };
 
   // TODO: move this to factory 
   const priceInSatoshi = getPriceInSatoshi(priceInfo.btc);
@@ -62,9 +63,10 @@ export async function printStatsCommand(ctx) {
     marketCap.usd,
     volumeInfo.usd,
   ];
-  // console.dir(params, { depth: null });
 
-  return await ctx.replyWithHTML(getHtmlString(params));
+  console.dir(ctx, { depth: null });
+
+  return ctx.replyWithHTML(getHtmlString(params));
 }
 
 export default async function registerStats(bot) {

@@ -1,22 +1,19 @@
 import CoinGecko from 'coingecko-api';
 const CoinGeckoClient = new CoinGecko();
-import { CACHE_KEYS, getCache } from '../utils';
+import { cache } from '../utils';
 
-let cache = getCache();
-console.log(' #####@@@@@@@@@@@##### ');
-console.dir(cache);
+// console.log(' #####@@@@@@@@@@@##### ');
+// console.dir(cache);
 
 
 const getTokenInfo = async (tokenID, params = null) => {
     try {
-        cache = getCache();
-        console.log(' ########## ');
-        console.dir(cache);
+        // console.dir(cache);
 
         let tokensCache = {};
 
         if (!tokensCache || !tokensCache[tokenID]) {
-            await CoinGeckoClient.coins.fetch(tokenID, {
+            return await CoinGeckoClient.coins.fetch(tokenID, {
                 tickers: true, // true
                 market_data: true, // true
                 community_data: true, // true
@@ -26,7 +23,6 @@ const getTokenInfo = async (tokenID, params = null) => {
                 ...params,
             })
                 .then(async (res) => {
-                    console.log(' ########## cache.keys ');
                     // cache?.set(CACHE_KEYS.PRICE, price, env.CACHE_INTERVAL);
                     // console.dir(cache.get(CACHE_KEYS.TOKENS));
                     // console.dir(cache.keys());
@@ -39,13 +35,16 @@ const getTokenInfo = async (tokenID, params = null) => {
                         res.data,
                         process.env.CACHE_INTERVAL
                     )
+                    // console.log(' ########## cache.keys ', cache.get('eltcoin'));
 
-                    return res.data;
+                    return cache.get(tokenID);
                 })
                 .catch(err => {
                     console.log('Error: ', err)
                 });
         }
+
+        return cache.get(tokenID);
     } catch (error) {
         console.error(error);
     }
