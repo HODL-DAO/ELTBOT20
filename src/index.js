@@ -10,6 +10,7 @@ import { handlers } from "./handlers";
 import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
 import { attachUser } from "./middleware/attachUser";
+import { initCacheInstance } from './utils';
 
 let bot = {};
 if (process.env.IS_PROD === true) {
@@ -46,7 +47,10 @@ mongoose.connect(
 
 mongoose.set("useCreateIndex", true);
 
-//rate limit
+// init cache
+initCacheInstance();
+
+// rate limit
 bot.use(rateLimit(limitConfig));
 
 //attach user
