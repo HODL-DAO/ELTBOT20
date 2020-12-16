@@ -64,7 +64,7 @@ export async function printStatsCommand(ctx) {
     volumeInfo.usd,
   ];
 
-  console.dir(ctx, { depth: null });
+  // console.dir(ctx, { depth: null });
 
   return ctx.replyWithHTML(getHtmlString(params));
 }

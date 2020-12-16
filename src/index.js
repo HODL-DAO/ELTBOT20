@@ -17,10 +17,12 @@ if (process.env.IS_PROD === true) {
 
 // Set limit to 1 message per 3 seconds
 const limitConfig = {
-  window: 60000,
-  limit: 40,
+  window: 30000,
+  limit: 1,
   onLimitExceeded: (ctx) => ctx.reply("Rate limit exceeded"),
 };
+// rate limit
+bot.use(rateLimit(limitConfig));
 
 console.log("info", "Hello World from ELTBOT20");
 
@@ -42,9 +44,6 @@ mongoose.connect(
 
 mongoose.set("useCreateIndex", true);
 
-// rate limit
-bot.use(rateLimit(limitConfig));
-
 //attach user
 bot.use(attachUser);
 
@@ -56,33 +55,32 @@ bot.catch((err, ctx) => {
   console.error(`Ooops, encountered an error for ${ctx.updateType}`, err);
 });
 
-
 // make sure the default cache struct is in place
 CacheService.updateCacheData()
   .then((res) => {
-    console.log(' res ', res)
 
     let getPriceHandler = () => {
       return bot.hears(/\/price/, (ctx) => {
         ctx.reply('🤔 checking...')
-          .then((res) => {
-            ctx.deleteMessage(res['message_id']);
-            handlers.stats.printStats(ctx);
+          .then((loadingMsg) => {
+            handlers
+              .stats
+              .printStats(ctx)
+              .then((res) => {
+                ctx.deleteMessage(loadingMsg['message_id']);
+              });
           })
       });
     };
 
-    let priceCommandHandler = CacheService.setCache(
+    CacheService.getCache().set(
       'priceCommandHandler',
       getPriceHandler(),
       {
-        stdTTL: 30000,
+        // stdTTL: 30000,
+        // deleteOnExpire: true,
       }
-    ).on('expired', (key, val) => {
-      console.log(key, ' --- ', val)
-    });
-    console.log(' priceCommandHandler ', priceCommandHandler)
-
+    );
   })
 
 bot.launch();

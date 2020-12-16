@@ -8,9 +8,8 @@ import NodeCache from "node-cache";
 let cache;
 
 export default {
-    setCache: (args) => {
+    initCache: (args) => {
         if (args && cache) {
-            cache.set(...args);
             return cache;
         }
 

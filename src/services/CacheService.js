@@ -17,18 +17,18 @@ async function hourlyChacheUpdate() {
 async function updateCacheData() {
 
   if (!cacheUtils.getCache()) {
-    cacheUtils.setCache();
+    cacheUtils.initCache();
   }
 
   try {
     Object.keys(trackTokens)
       .forEach(async (key) => {
-        console.log(
-          cacheUtils.setCache(
-            key,
-            await CoinGeckoService.getTokenInfo(key),
-            24 * 3600,
-          )
+        cacheUtils.getCache().set(
+          key,
+          await CoinGeckoService.getTokenInfo(key),
+          {
+
+          }
         )
       });
 
