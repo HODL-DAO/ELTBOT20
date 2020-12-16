@@ -1,11 +1,13 @@
-import CoinGeckoClient from './CoinGeckoClient';
+import CoinGeckoService from './CoinGeckoService';
 import UserService from './UserService';
 import ChartsService from './charts';
+import CacheService from './CacheService';
 // import PuppeteerService from './PuppeteerService';
 
 export {
-    CoinGeckoClient,
+    CoinGeckoService,
     UserService,
     ChartsService,
+    CacheService,
     // PuppeteerService,
 }
