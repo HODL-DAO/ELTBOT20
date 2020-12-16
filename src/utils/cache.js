@@ -9,10 +9,6 @@ let cache;
 
 export default {
     initCache: (args) => {
-        if (args && cache) {
-            return cache;
-        }
-
         if (!cache) {
             return cache = new NodeCache();
         }

@@ -15,7 +15,9 @@ if (process.env.IS_PROD === true) {
   bot = new Telegraf(process.env.BOT_TOKEN_DEV)
 }
 
-// Set limit to 1 message per 3 seconds
+const newBotBirthTime = Date.now() / 1000; // seconds
+
+// Set limit to 1 message per 30 seconds
 const limitConfig = {
   window: 30000,
   limit: 1,
@@ -60,7 +62,14 @@ CacheService.updateCacheData()
   .then((res) => {
 
     let getPriceHandler = () => {
+      console.log(" getPriceHandler ", res);
+
       return bot.hears(/\/price/, (ctx) => {
+
+        if (ctx.update.message.date < newBotBirthTime) {
+          return;
+        }
+
         ctx.reply('🤔 checking...')
           .then((loadingMsg) => {
             handlers
@@ -75,11 +84,7 @@ CacheService.updateCacheData()
 
     CacheService.getCache().set(
       'priceCommandHandler',
-      getPriceHandler(),
-      {
-        // stdTTL: 30000,
-        // deleteOnExpire: true,
-      }
+      getPriceHandler()
     );
   })
 
