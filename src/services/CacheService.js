@@ -1,6 +1,5 @@
-import NodeCache from "node-cache";
 import CoinGeckoService from "./CoinGeckoService";
-import { createCacheInstance, cache } from '../utils';
+import { cacheUtils } from "../utils";
 
 const trackTokens = {
   'eltcoin': null,
@@ -17,23 +16,22 @@ async function hourlyChacheUpdate() {
 
 async function updateCacheData() {
 
-  if (!cache) {
-    // create cache
-    createCacheInstance();
-    console.log(' createCacheInstance cache ', cache)
+  if (!cacheUtils.getCache()) {
+    cacheUtils.setCache();
   }
 
   try {
     Object.keys(trackTokens)
       .forEach(async (key) => {
-        cache.set(
-          key,
-          await CoinGeckoService.getTokenInfo(key),
-          24 * 3600,
-        );
+        console.log(
+          cacheUtils.setCache(
+            key,
+            await CoinGeckoService.getTokenInfo(key),
+            24 * 3600,
+          )
+        )
       });
 
-    return cache;
   } catch (error) {
     console.error(error);
   }
@@ -41,8 +39,7 @@ async function updateCacheData() {
 }
 
 export default {
-  cache,
-  createCacheInstance,
   updateCacheData,
   hourlyChacheUpdate,
+  ...cacheUtils,
 }

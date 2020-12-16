@@ -1,5 +1,5 @@
 import Telegraf, { Extra, Markup } from "telegraf";
-import { COMMANDS } from "../utils/consts";
+import { COMMANDS } from "../utils";
 
 export default async function registerMenu(bot) {
   //start commands prints the menu
@@ -23,7 +23,7 @@ const say = {
   "ALERT_MENU": `<strong>Alerts 🔔</strong><b>You can set an alert and we will send you a message when an alert is triggered.</b>
                   <i>📈 → Notify me when bitcoin price crosses a specified value </i>
                   <i>🏦 → Notify me when unconfirmed transactions are less than a specified value </i>`,
-  
+
 }
 
 async function printStatsMenu(ctx) {

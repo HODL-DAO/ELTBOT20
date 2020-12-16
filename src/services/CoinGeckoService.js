@@ -1,14 +1,9 @@
 import CoinGecko from 'coingecko-api';
 const CoinGeckoClient = new CoinGecko();
-import { cache } from '../utils';
-
-// console.log(' #####@@@@@@@@@@@##### ');
-// console.dir(cache);
-
+import { cacheUtils } from '../utils';
 
 const getTokenInfo = async (tokenID, params = null) => {
     try {
-        // console.dir(cache);
 
         let tokensCache = {};
 
@@ -23,28 +18,20 @@ const getTokenInfo = async (tokenID, params = null) => {
                 ...params,
             })
                 .then(async (res) => {
-                    // cache?.set(CACHE_KEYS.PRICE, price, env.CACHE_INTERVAL);
-                    // console.dir(cache.get(CACHE_KEYS.TOKENS));
-                    // console.dir(cache.keys());
-
-                    // console.log(' ########## ');
-                    // console.dir(res);
-
-                    cache.set(
+                    cacheUtils.getCache().set(
                         tokenID,
                         res.data,
                         process.env.CACHE_INTERVAL
                     )
-                    // console.log(' ########## cache.keys ', cache.get('eltcoin'));
 
-                    return cache.get(tokenID);
+                    return cacheUtils.getCache().get(tokenID);
                 })
                 .catch(err => {
                     console.log('Error: ', err)
                 });
         }
 
-        return cache.get(tokenID);
+        return cacheUtils.getCache().get(tokenID);
     } catch (error) {
         console.error(error);
     }

@@ -8,12 +8,6 @@ import rateLimit from "telegraf-ratelimit";
 import { attachUser } from "./middleware/attachUser";
 import { CacheService } from './services';
 
-// make sure the default cache struct is in place
-CacheService.updateCacheData()
-  .then((res) => {
-    // console.log('****************************', res)
-  })
-
 let bot = {};
 if (process.env.IS_PROD === true) {
   bot = new Telegraf(process.env.BOT_TOKEN_PROD)
@@ -62,16 +56,36 @@ bot.catch((err, ctx) => {
   console.error(`Ooops, encountered an error for ${ctx.updateType}`, err);
 });
 
+
+// make sure the default cache struct is in place
+CacheService.updateCacheData()
+  .then((res) => {
+    console.log(' res ', res)
+
+    let getPriceHandler = () => {
+      return bot.hears(/\/price/, (ctx) => {
+        ctx.reply('🤔 checking...')
+          .then((res) => {
+            ctx.deleteMessage(res['message_id']);
+            handlers.stats.printStats(ctx);
+          })
+      });
+    };
+
+    let priceCommandHandler = CacheService.setCache(
+      'priceCommandHandler',
+      getPriceHandler(),
+      {
+        stdTTL: 30000,
+      }
+    ).on('expired', (key, val) => {
+      console.log(key, ' --- ', val)
+    });
+    console.log(' priceCommandHandler ', priceCommandHandler)
+
+  })
+
 bot.launch();
-
-bot.hears('/price', (ctx) => {
-  ctx.reply('🤔 checking...')
-    .then((res) => {
-      ctx.deleteMessage(res['message_id']);
-      handlers.stats.printStats(ctx);
-    })
-});
-
 console.log("eltcoin_beta_bot started! ");
 
 export default bot;
