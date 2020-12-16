@@ -6,7 +6,7 @@ import { handlers } from "./handlers";
 import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
 import { attachUser } from "./middleware/attachUser";
-import { CacheService } from './services';
+import { AddressService, CacheService } from './services';
 
 let bot = {};
 if (process.env.IS_PROD === true) {
@@ -60,15 +60,10 @@ bot.catch((err, ctx) => {
 // make sure the default cache struct is in place
 CacheService.updateCacheData()
   .then((res) => {
-
     let getPriceHandler = () => {
-      console.log(" getPriceHandler ", res);
-
       return bot.hears(/\/price/, (ctx) => {
-
-        if (ctx.update.message.date < newBotBirthTime) {
-          return;
-        }
+        // discard old meassages 
+        if (ctx.update.message.date < newBotBirthTime) return
 
         ctx.reply('🤔 checking...')
           .then((loadingMsg) => {
@@ -82,10 +77,21 @@ CacheService.updateCacheData()
       });
     };
 
-    CacheService.getCache().set(
-      'priceCommandHandler',
-      getPriceHandler()
-    );
+    CacheService.getCache()
+      .set(
+        'priceCommandHandler',
+        getPriceHandler()
+      );
+  })
+  .then((res) => {
+
+    return bot.hears(/^0x[a-fA-F0-9]{40}$/g, (ctx) => {
+      // console.log(' addStr ', ctx.update.message.text)
+
+      let addrInfo = await AddressService.getAddressData(ctx.update.message.text);
+
+
+    })
   })
 
 bot.launch();
