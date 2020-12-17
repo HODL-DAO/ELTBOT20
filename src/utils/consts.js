@@ -11,3 +11,41 @@ export const COMMANDS = {
 export const CACHE_KEYS = {
   "TOKENS": "tokens"
 }
+
+export const stickerRanks = [
+  {
+    sticker: "CAADBAADcAAD7sQtCFpEQo1nVeUdAg",
+    emoji: "😭",
+    title: "*Pauper*",
+  },
+  {
+    sticker: "CAADBAADagAD7sQtCBrkjG8L05DqAg",
+    emoji: "😍",
+    title: "⭐️ *HOLDr*",
+  },
+  {
+    sticker: "CAADBAADawAD7sQtCCej-8hD1pRrAg",
+    emoji: "😍",
+    title: "⭐️⭐️ OG *HODLr*",
+  },
+  {
+    sticker: "CAADBAADbAAD7sQtCOrGC44gISGIAg",
+    emoji: "🤑",
+    title: "⭐️⭐️⭐️ OG *HODLr*",
+  },
+  {
+    sticker: "CAADBAADbQAD7sQtCN5cCiXot0QYAg",
+    emoji: "🤑",
+    title: "*Pauper*",
+  },
+  {
+    sticker: "CAADBAADbgAD7sQtCILn0seTLE4OAg",
+    emoji: "💩",
+    title: "*TurdRank*",
+  },
+  {
+    sticker: "CAADBAADbwAD7sQtCKUzJ96MsVZ7Ag",
+    emoji: "😭",
+    title: "*Pauper*",
+  },
+]

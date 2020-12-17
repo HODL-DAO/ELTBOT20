@@ -1,7 +1,8 @@
 import axios from "axios";
+import { stickerRanks } from '../utils';
 import { CacheService } from "../services";
 
-const getAddressData = async (addrStr) => {
+const getAddrData = async (addrStr) => {
   try {
     let addrData = await axios({
       baseURL: 'https://api.etherscan.io/api',
@@ -13,25 +14,52 @@ const getAddressData = async (addrStr) => {
         tag: 'latest',
         apikey: process.env.ETHERSCAN_API
       }
-    });
+    })
+    // console.dir(addrData, { depth: 1 });
+    if (addrData.data) {
+      let cachable = {
+        balance: addrData.data.result,
+        rank: await getAddrInfoHTML(addrStr, addrData.data),
+      }
 
-    console.log(' ;;;;;;;;;;;; ');
-    console.dir(addrData);
+      // const jsonRes = await addrData.json();
+      CacheService.getCache()
+        .set(addrStr, cachable);
 
-    if (addrData.ok) {
-      const jsonRes = await addrData.json();
+      let currCahe = CacheService.getCache().get(addrStr);
+      console.log(' currCache ', currCahe)
 
-
-      let knownAddresses = CacheService.getCache().set(['known_addresses']);
-      knownAddresses.set([addrStr], jsonRes)
-
-      console.log(' %%%%%%%%% ', CacheService.getCache().keys())
+      return currCahe;
     }
+
+    throw new Error('Req Failed!! ');
+
   } catch (error) {
     console.error(error);
   }
 }
 
+const getAddrInfoHTML = (addrStr, data) => {
+
+  let lines = {
+    rank: `Rank: <b>${getAddrRank(data.result)}</b>`,
+    addr: `Address: <b>${addrStr}</b>`
+  }
+
+  return ` ${lines.rank} \n ${lines.addr} `
+};
+
+const getAddrRank = async (addrBalance) => {
+  console.log(' getAddrRank addrBalance', addrBalance)
+  console.dir(stickerRanks)
+
+  return {
+
+  }
+};
+
 export default {
-  getAddressData
+  getAddressData: getAddrData,
+  getAddressRank: getAddrRank,
+  getAddrInfoHTML: getAddrInfoHTML,
 };

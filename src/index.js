@@ -5,7 +5,7 @@ import Telegraf from "telegraf";
 import { handlers } from "./handlers";
 import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
-import { attachUser } from "./middleware/attachUser";
+import { addressBadge, attachUser } from "./middleware";
 import { AddressService, CacheService } from './services';
 
 let bot = {};
@@ -19,7 +19,7 @@ const newBotBirthTime = Date.now() / 1000; // seconds
 
 // Set limit to 1 message per 30 seconds
 const limitConfig = {
-  window: 30000,
+  window: 3000,
   limit: 1,
   onLimitExceeded: (ctx) => ctx.reply("Rate limit exceeded"),
 };
@@ -46,8 +46,11 @@ mongoose.connect(
 
 mongoose.set("useCreateIndex", true);
 
-//attach user
+// attach user
 bot.use(attachUser);
+// address rank
+// bot.use(addressBadge);
+
 
 // register all bot commands, actions, etc
 handlers.stats.register(bot);
@@ -57,7 +60,11 @@ bot.catch((err, ctx) => {
   console.error(`Ooops, encountered an error for ${ctx.updateType}`, err);
 });
 
-// make sure the default cache struct is in place
+/**
+  TODO: this needs to move to middleware during 
+  next refactoring; see attachUser for pattern
+  make sure the default cache struct is in place
+*/
 CacheService.updateCacheData()
   .then((res) => {
     let getPriceHandler = () => {
@@ -86,12 +93,17 @@ CacheService.updateCacheData()
   .then((res) => {
 
     return bot.hears(/^0x[a-fA-F0-9]{40}$/g, (ctx) => {
-      // console.log(' addStr ', ctx.update.message.text)
+      return (async function () {
+        let addrInfo = await AddressService.getAddressData(ctx.update.message.text);
 
-      let addrInfo = await AddressService.getAddressData(ctx.update.message.text);
+        console.log(' index addrInfo ', addrInfo)
 
-
-    })
+        ctx.replyWithHTML(addrInfo.rank)
+          .then((res) => {
+            console.log(' ???????????? ', res)
+          });
+      })();
+    });
   })
 
 bot.launch();
