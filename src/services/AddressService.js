@@ -14,12 +14,20 @@ const getAddrData = async (addrStr) => {
         tag: 'latest',
         apikey: process.env.ETHERSCAN_API
       }
-    })
-    // console.dir(addrData, { depth: 1 });
+    });
+
+    const eltcoinInfo = await CacheService.getCache().get('eltcoin');
+    console.log(' eltcoinInfo ', eltcoinInfo.priceInUSD);
     if (addrData.data) {
       let cachable = {
+        raw: addrData.data,
         balance: addrData.data.result,
-        rank: await getAddrInfoHTML(addrStr, addrData.data),
+        rank: getAddrRank(addrData.data.result),
+        balanceELT: addrData.data.result / 10 ^ 8,
+        balanceUSD: addrData.data.result * eltcoinInfo.priceInUSD,
+        airDropBonus: null,
+        hodlerBonus: null,
+        extra: null,
       }
 
       // const jsonRes = await addrData.json();
@@ -42,14 +50,28 @@ const getAddrData = async (addrStr) => {
 const getAddrInfoHTML = (addrStr, data) => {
 
   let lines = {
-    rank: `Rank: <b>${getAddrRank(data.result)}</b>`,
-    addr: `Address: <b>${addrStr}</b>`
+    rank: `Rank: <b>${getAddrRank(data.balance)}</b>`,
+    addr: `Address: <b>${addrStr}</b>`,
+    balanceELT: `Balance: <b>${(data.balanceELT)} ELT </b>`,
+    balanceUSD: `USD Value<b>~$${data.balanceUSD} USD </b>`,
+    airDropBonus: `🪂 AirDrop Bonus: <b>${data.rankBonus}%</b>`,
+    hodlerBonus: `Potential 🔥 BURN Bonus: <b>${data.hodlerBonus}</b>`,
+    extra: `Special Roles: <b>CORE COMMUNITY 🌓 (${data.extra}%)</b>`,
   }
 
-  return ` ${lines.rank} \n ${lines.addr} `
+  return (
+    ` 💰
+    ${lines.rank} 
+    ${lines.addr} 
+    ${lines.balanceELT} 
+    ${lines.balanceUSD} 
+    ${lines.airDropBonus} 
+    ${lines.hodlerBonus}
+    ${lines.extra} 
+    `)
 };
 
-const getAddrRank = async (addrBalance) => {
+const getAddrRank = (addrBalance) => {
   console.log(' getAddrRank addrBalance', addrBalance)
   console.dir(stickerRanks)
 

@@ -6,7 +6,10 @@ import { handlers } from "./handlers";
 import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
 import { addressBadge, attachUser } from "./middleware";
-import { AddressService, CacheService } from './services';
+import {
+  AddressService,
+  CacheService
+} from './services';
 
 let bot = {};
 if (process.env.IS_PROD === true) {
@@ -94,14 +97,16 @@ CacheService.updateCacheData()
 
     return bot.hears(/^0x[a-fA-F0-9]{40}$/g, (ctx) => {
       return (async function () {
-        let addrInfo = await AddressService.getAddressData(ctx.update.message.text);
+        let addrStr = ctx.update.message.text;
+        let addrInfo = await AddressService.getAddressData(addrStr);
 
         console.log(' index addrInfo ', addrInfo)
 
-        ctx.replyWithHTML(addrInfo.rank)
-          .then((res) => {
-            console.log(' ???????????? ', res)
-          });
+        ctx.replyWithHTML(
+          AddressService.getAddrInfoHTML(addrStr, addrInfo)
+        ).then((res) => {
+          console.log(' ???????????? ', res)
+        });
       })();
     });
   })

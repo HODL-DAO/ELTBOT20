@@ -49,3 +49,16 @@ export const stickerRanks = [
     title: "*Pauper*",
   },
 ]
+
+export const getPriceInSatoshi = (val) => {
+  let sat = Number(val.toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
+  return sat.replace(/0/g, '').replace(/./, '');
+};
+
+export const numberFormatOptions = {
+  useGrouping: false, // boolean;
+  minimumIntegerDigits: 1, // number;
+  minimumFractionDigits: 8, // number;
+  maximumFractionDigits: 18, // number;
+}
+

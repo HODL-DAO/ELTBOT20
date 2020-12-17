@@ -1,27 +1,16 @@
-import { CoinGeckoService } from "../services";
-
-import * as EthUnits from 'ethereumjs-units';
+import {
+  CacheService,
+  CoinGeckoService
+} from "../services";
 
 import { COMMANDS } from "../utils";
 
-
-const numberFormatOptions = {
-  useGrouping: false, // boolean;
-  minimumIntegerDigits: 1, // number;
-  minimumFractionDigits: 8, // number;
-  maximumFractionDigits: 18, // number;
-}
-
-const getPriceInSatoshi = (val) => {
-  let sat = Number(val.toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
-  return sat.replace(/0/g, '').replace(/./, '');
-};
-
 export async function printStatsCommand(ctx) {
 
-  let info = await CoinGeckoService.getTokenInfo('eltcoin')
+  let info = CacheService.getCache().get('eltcoin');
+  if (!info) info = await CoinGeckoService.getTokenInfo('eltcoin');
 
-  const getHtmlString = (params) => {
+  const getHtmlString = () => {
     let dateTime = new Date();
 
     return (
@@ -29,44 +18,18 @@ export async function printStatsCommand(ctx) {
       <b> 📈 ELCOIN PRICE DATA 💸 </b>
       <b>${dateTime.toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' })} on ${dateTime.toLocaleDateString('en-US')} </b>
       <b>
-        1 ELT / ฿ ${params[0]} Satoshi
-        1 ELT / Ξ ${params[3]} ETH
-        1 ELT / $ ${params[4]} USD  
+        1 ELT / ฿ ${info.priceInSatoshi} Satoshi
+        1 ELT / Ξ ${info.priceInETH} ETH
+        1 ELT / $ ${info.priceInUSD} USD  
       </b><b>
-        Mkt Cap = $ ${params[5]}
-        24h Volume = $ ${params[6]} 
+        Mkt Cap = $ ${info.marketCap}
+        24h Volume = $ ${info.volInfo} 
       </b>
       \r\n
       `);
   };
 
-  let priceInfo = info.tickers[0]['converted_last'];
-  let marketCap = info['market_data']['market_cap'];
-  let volumeInfo = info.tickers[0]['converted_volume'];
-
-  // TODO: fix this
-  // PuppeteerService.createHtmlDoc();
-
-  // TODO: move this to factory 
-  const priceInSatoshi = getPriceInSatoshi(priceInfo.btc);
-  const priceInBTC = Number(priceInfo.btc.toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
-  const priceInWei = EthUnits.convert(priceInfo.eth.toFixed(18), 'eth', 'wei').toLocaleString('en-EN', numberFormatOptions);
-  const priceInETH = Number(priceInfo.eth.toFixed(18)).toLocaleString('en-EN', numberFormatOptions);
-  const priceInUSD = Number(priceInfo.usd.toFixed(8)).toLocaleString('en-EN', numberFormatOptions);
-
-  var params = [
-    priceInSatoshi,
-    priceInBTC,
-    priceInWei,
-    priceInETH,
-    priceInUSD,
-    marketCap.usd,
-    volumeInfo.usd,
-  ];
-
-  // console.dir(ctx, { depth: null });
-
-  return ctx.replyWithHTML(getHtmlString(params));
+  return ctx.replyWithHTML(getHtmlString());
 }
 
 export default async function registerStats(bot) {

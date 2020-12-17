@@ -1,9 +1,17 @@
-import { COMMANDS, CACHE_KEYS, stickerRanks } from './consts';
+import {
+    COMMANDS,
+    CACHE_KEYS,
+    getPriceInSatoshi,
+    stickerRanks,
+    numberFormatOptions,
+} from './consts';
 import cacheUtils from './cache';
 
 export {
     COMMANDS,
     CACHE_KEYS,
-    stickerRanks,
     cacheUtils,
+    getPriceInSatoshi,
+    stickerRanks,
+    numberFormatOptions,
 };
