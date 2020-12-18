@@ -5,15 +5,17 @@ import {
 
 import { COMMANDS } from "../utils";
 
-export async function getStatsMessage() {
+export async function getStatsMessage(md) {
 
   let info = CacheService.getCache().get('eltcoin');
   if (!info) info = await CoinGeckoService.getTokenInfo('eltcoin');
 
   let dateTime = new Date();
 
-  return (
-    `
+  return md ? (
+    `***📈 <u>ELTCOIN PRICE DATA</u> 💸***`
+  ) : (
+      `
       <b> 📈 <u>ELTCOIN PRICE DATA</u> 💸 </b>
       <b><code>${dateTime.toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' })} on ${dateTime.toLocaleDateString('en-US')} </code></b>
       <b>

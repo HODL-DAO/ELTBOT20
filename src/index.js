@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import Telegraf from "telegraf";
+import Telegraf, { Extra, Markup } from "telegraf";
 import { handlers } from "./handlers";
 import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
@@ -71,28 +71,25 @@ bot.catch((err, ctx) => {
 CacheService.updateCacheData()
   .then((res) => {
     let getPriceHandler = () => {
-      return bot.hears(/\/price/, (ctx) => {
+
+      bot.hears(/\/price/, async (ctx) => {
         // discard old meassages 
         if (ctx.update.message.date < newBotBirthTime) return
 
-        ctx.replyWithHTML('🤔 checking...')
-          .then((loadingMsg) => {
-            handlers
-              .stats
-              .getStatsMessage(ctx)
-              .then((res) => {
-                console.log(' [[[[[[[[[[ ctx ]]]]]]]]]] ', ctx)
-                console.log(' [[[[[[[[[[ res ]]]]]]]]]] ', loadingMsg)
+        let loadingMsg = await ctx.replyWithHTML('🤔 checking...');
 
-                ctx.editMessageText(loadingMsg.chat.id, loadingMsg['message_id'], res)
-                  .then((foo) => {
-                    console.log(' ++++++++++++++++++++++++++ ')
-                    console.dir(foo)
-                  })
-                  .catch((err) => {
-                    console.error(err)
-                  })
-              });
+        handlers.stats
+          .getStatsMessage()
+          .then(async (res) => {
+            console.log('.....', res)
+
+            let newText = await ctx.telegram.editMessageText(
+              loadingMsg.chat.id,
+              loadingMsg['message_id'],
+              loadingMsg['message_id'],
+              res,
+              Extra.HTML().markup()
+            );
           })
       });
     };
