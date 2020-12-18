@@ -28,9 +28,9 @@ const getAddrData = async (addrStr) => {
         balance: addrData.data.result,
         rank: addrRank,
         balanceELT: balElt,
-        balanceUSD: new Number(addrData.data.result * eltcoinInfo.priceInUSD).toFixed(2),
+        balanceUSD: new Number(balElt * eltcoinInfo.priceInUSD).toFixed(2),
         airDropBonus: addrRank.bonus,
-        hodlerBonus: `0.015 HODL (100% bonus) @ 100% ELT burned`,
+        hodlerBonus: balElt * 0.0000005,
         extra: {
           isCoreComm: (addrStr) => {
             return `<b>CORE COMMUNITY 🌓</b>`;
@@ -41,7 +41,6 @@ const getAddrData = async (addrStr) => {
         },
       }
 
-      // const jsonRes = await addrData.json();
       CacheService.getCache()
         .set(addrStr, cachable);
 
@@ -62,10 +61,10 @@ const getAddrInfoHTML = (addrStr, data) => {
 
   let lines = {
     addr: `<b>Address:</b> <a href="${data.addrUrl}"><b>${addrStr}</b></a>`,
-    balanceELT: `<b>Balance:</b> <code>${(data.balanceELT)} ELT</code> 😍`,
-    balanceUSD: `<b>USD Value:</b> <code> ~$${data.balanceUSD} USD </code>`,
-    hodlerBonus: `<b>Potential ELT BURN Bonus:</b> <code>${data.hodlerBonus}</code>🔥`,
-    airDropBonus: `<b>ELTCOIN HODL-DAO AIRDROP Bonus:</b> <code>${data.airDropBonus}%</code> 🪂`,
+    balanceELT: `<b>Balance:</b> <code>${(data.balanceELT.toLocaleString("en-US"))} ELT</code> 😍`,
+    balanceUSD: `<b>USD Value:</b> <code> ~$${data.balanceUSD.toLocaleString("en-US")} USD </code> 🤑`,
+    hodlerBonus: `<b>Potential ELT BURN Bonus:</b> \r <code>${data.hodlerBonus.toLocaleString("en-US")} HODL(100% bonus) @100% ELT burned</code>🔥`,
+    airDropBonus: `<b>ELTCOIN HODL-DAO AIRDROP Bonus:</b> <code>${data.airDropBonus.toLocaleString("en-US")}%</code> 🪂`,
     rank: `<b>Rank:</b> <code>${data.rank.title}</code>`,
     extra: `<pre>==Special Roles:==</pre> 
       ${data.extra.isCoreComm(addrStr)}

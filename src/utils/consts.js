@@ -17,31 +17,31 @@ export const hodlrRanks = [
     sticker: "CAADBAADcAAD7sQtCFpEQo1nVeUdAg",
     emoji: "😭",
     title: "*Pauper*",
-    bonus: '10%',
+    bonus: 10,
   },
   {
     sticker: "CAADBAADagAD7sQtCBrkjG8L05DqAg",
     emoji: "😍",
     title: "⭐️ *HOLDr*",
-    bonus: '10%',
+    bonus: 10,
   },
   {
     sticker: "CAADBAADawAD7sQtCCej-8hD1pRrAg",
     emoji: "💲",
     title: "⭐️⭐️ OG *HODLr*",
-    bonus: '10%',
+    bonus: 10,
   },
   {
     sticker: "CAADBAADbAAD7sQtCOrGC44gISGIAg",
     emoji: "🤑",
     title: "⭐️⭐️⭐️ OG *HODLr*",
-    bonus: '10%',
+    bonus: 10,
   },
   {
     sticker: "CAADBAADbQAD7sQtCN5cCiXot0QYAg",
     emoji: "🗝️",
     title: "⭐️⭐️⭐️⭐️ OG *HODLr*",
-    bonus: '10%',
+    bonus: 10,
   },
 ]
 

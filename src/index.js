@@ -75,13 +75,23 @@ CacheService.updateCacheData()
         // discard old meassages 
         if (ctx.update.message.date < newBotBirthTime) return
 
-        ctx.reply('🤔 checking...')
+        ctx.replyWithHTML('🤔 checking...')
           .then((loadingMsg) => {
             handlers
               .stats
-              .printStats(ctx)
+              .getStatsMessage(ctx)
               .then((res) => {
-                ctx.deleteMessage(loadingMsg['message_id']);
+                console.log(' [[[[[[[[[[ ctx ]]]]]]]]]] ', ctx)
+                console.log(' [[[[[[[[[[ res ]]]]]]]]]] ', loadingMsg)
+
+                ctx.editMessageText(loadingMsg.chat.id, loadingMsg['message_id'], res)
+                  .then((foo) => {
+                    console.log(' ++++++++++++++++++++++++++ ')
+                    console.dir(foo)
+                  })
+                  .catch((err) => {
+                    console.error(err)
+                  })
               });
           })
       });
