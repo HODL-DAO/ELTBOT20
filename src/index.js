@@ -5,7 +5,7 @@ import Telegraf from "telegraf";
 import { handlers } from "./handlers";
 import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
-import { addressBadge, attachUser } from "./middleware";
+import { attachUser } from "./middleware";
 import {
   AddressService,
   CacheService
@@ -105,7 +105,7 @@ CacheService.updateCacheData()
         ctx.replyWithHTML(
           AddressService.getAddrInfoHTML(addrStr, addrInfo)
         ).then((res) => {
-          console.log(' ???????????? ', res)
+          // console.log(' ???????????? ', res)
         });
       })();
     });

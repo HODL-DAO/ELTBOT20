@@ -15,7 +15,7 @@ export async function printStatsCommand(ctx) {
 
     return (
       `
-      <b> 📈 ELCOIN PRICE DATA 💸 </b>
+      <b> 📈 ELTCOIN PRICE DATA 💸 </b>
       <b>${dateTime.toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' })} on ${dateTime.toLocaleDateString('en-US')} </b>
       <b>
         1 ELT / ฿ ${info.priceInSatoshi} Satoshi
@@ -23,7 +23,7 @@ export async function printStatsCommand(ctx) {
         1 ELT / $ ${info.priceInUSD} USD  
       </b><b>
         Mkt Cap = $ ${info.marketCap}
-        24h Volume = $ ${info.volInfo} 
+        24h Vol = $ ${info.volInfo} 
       </b>
       \r\n
       `);
