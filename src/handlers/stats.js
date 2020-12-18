@@ -12,10 +12,7 @@ export async function getStatsMessage(md) {
 
   let dateTime = new Date();
 
-  return md ? (
-    `***📈 <u>ELTCOIN PRICE DATA</u> 💸***`
-  ) : (
-      `
+  return `
       <b> 📈 <u>ELTCOIN PRICE DATA</u> 💸 </b>
       <b><code>${dateTime.toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit' })} on ${dateTime.toLocaleDateString('en-US')} </code></b>
       <b>
@@ -27,7 +24,7 @@ export async function getStatsMessage(md) {
         24h Vol = $ ${info.volInfo.toLocaleString("en-US")} 
       </b>
       \r\n
-    `);
+    `;
 }
 
 export async function printStatsCommand(ctx) {

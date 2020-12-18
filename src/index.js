@@ -100,23 +100,20 @@ CacheService.updateCacheData()
         getPriceHandler()
       );
   })
-  .then((res) => {
+// .then((res) => {
+//   return bot.hears(/^0x[a-fA-F0-9]{40}$/g, (ctx) => {
+//     return (async function () {
+//       let addrStr = ctx.update.message.text;
+//       let addrInfo = await AddressService.getAddressData(addrStr);
 
-    return bot.hears(/^0x[a-fA-F0-9]{40}$/g, (ctx) => {
-      return (async function () {
-        let addrStr = ctx.update.message.text;
-        let addrInfo = await AddressService.getAddressData(addrStr);
+//       console.log(' index addrInfo ', addrInfo)
 
-        console.log(' index addrInfo ', addrInfo)
-
-        ctx.replyWithHTML(
-          AddressService.getAddrInfoHTML(addrStr, addrInfo)
-        ).then((res) => {
-          // console.log(' ???????????? ', res)
-        });
-      })();
-    });
-  })
+//       ctx.replyWithHTML(
+//         AddressService.getAddrInfoHTML(addrStr, addrInfo)
+//       )
+//     })();
+//   });
+// })
 
 bot.launch();
 console.log("eltcoin_beta_bot started! ");
