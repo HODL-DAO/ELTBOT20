@@ -1,6 +1,12 @@
 import CoinGecko from 'coingecko-api';
 const CoinGeckoClient = new CoinGecko();
-import { cacheUtils } from '../utils';
+
+import {
+    cacheUtils,
+    getPriceInSatoshi,
+    numberFormatOptions,
+} from '../utils';
+import * as EthUnits from 'ethereumjs-units';
 
 const getTokenInfo = async (tokenID, params = null) => {
     try {
@@ -18,9 +24,22 @@ const getTokenInfo = async (tokenID, params = null) => {
                 ...params,
             })
                 .then(async (res) => {
+                    let priceInfo = res.data.tickers[0]['converted_last'];
+                    // console.log(' res: ', res.data['market_data']['market_cap']['usd']);
+
+                    // TODO: move this to factory 
                     cacheUtils.getCache().set(
                         tokenID,
-                        res.data,
+                        {
+                            raw: res.data,
+                            priceInSatoshi: getPriceInSatoshi(priceInfo.btc),
+                            // priceInBTC: Number(priceInfo.btc.toFixed(8)).toLocaleString('en-EN', numberFormatOptions),
+                            // priceInWei: EthUnits.convert(priceInfo.eth.toFixed(18), 'eth', 'wei').toLocaleString('en-EN', numberFormatOptions),
+                            priceInETH: Number(priceInfo.eth.toFixed(18)).toLocaleString('en-US', numberFormatOptions),
+                            priceInUSD: Number(priceInfo.usd.toFixed(8)).toLocaleString('en-US', numberFormatOptions),
+                            marketCap: res.data['market_data']['market_cap']['usd'],
+                            volInfo: res.data.tickers[0]['converted_volume']['usd'],
+                        },
                         process.env.CACHE_INTERVAL
                     )
 
