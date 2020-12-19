@@ -1,5 +1,4 @@
 // import puppeteer from 'puppeteer';
-import ChartsService from './charts';
 
 const padding = 15;
 const url = "https://www.hodldao.xyz";
@@ -43,12 +42,6 @@ async function createHtmlDoc() {
     });
 
     await page.evaluateOnNewDocument(() => {
-
-        // window.onloadp = async (e) => {
-        //     console.log(' document.body ----- ', document.body);
-        //     const chart = await ChartsService.EltMarketCandles(document.body);
-        //     console.log(' chart ----- ', chart);
-        // };
 
         // window.getElementAsPNG(chart.id)
 

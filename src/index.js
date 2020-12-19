@@ -91,9 +91,7 @@ CacheService.updateCacheData()
         handlers.stats
           .getStatsMessage()
           .then(async (res) => {
-            console.log('.....', res)
-
-            let newText = await ctx.telegram.editMessageText(
+            await ctx.telegram.editMessageText(
               loadingMsg.chat.id,
               loadingMsg['message_id'],
               loadingMsg['message_id'],
