@@ -1,9 +1,17 @@
-import { COMMANDS, CACHE_KEYS } from './consts';
-import { createCacheInstance, cache } from './cache'
+import {
+    COMMANDS,
+    CACHE_KEYS,
+    getPriceInSatoshi,
+    hodlrRanks,
+    numberFormatOptions,
+} from './consts';
+import cacheUtils from './cache';
 
 export {
     COMMANDS,
     CACHE_KEYS,
-    cache,
-    createCacheInstance,
-}
+    cacheUtils,
+    getPriceInSatoshi,
+    hodlrRanks,
+    numberFormatOptions,
+};

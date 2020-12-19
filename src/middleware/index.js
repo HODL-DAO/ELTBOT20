@@ -1,5 +1,7 @@
 import attachUser from './attachUser';
+import addressBadge from './addressBadge';
 
-export default {
+export {
+    addressBadge,
     attachUser,
 }
