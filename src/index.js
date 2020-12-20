@@ -47,6 +47,8 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
+    autoIndex: false,
   },
   (err) => {
     if (err) {
@@ -57,9 +59,6 @@ mongoose.connect(
   },
 );
 
-mongoose.set("useCreateIndex", true);
-
-// attach user
 bot.use(attachUser);
 // address rank
 // bot.use(addressBadge);
