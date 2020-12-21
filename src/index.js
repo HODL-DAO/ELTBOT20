@@ -12,10 +12,10 @@ import {
 import wakeUpDyno from './utils/wakeUpDyno';
 
 const express = require('express');
-const expressApp = express()
+const expressApp = express();
 
 const port = process.env.PORT || 3000
-expressApp.get('/', (req, res) => {
+expressApp.get('https://eltbot20.herokuapp.com/', (req, res) => {
   res.send('Hello World!')
 })
 expressApp.listen(port, () => {
