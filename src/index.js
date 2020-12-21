@@ -9,8 +9,9 @@ import { attachUser } from "./middleware";
 import {
   CacheService
 } from './services';
+import wakeUpDyno from './utils/wakeUpDyno';
 
-const express = require('express')
+const express = require('express');
 const expressApp = express()
 
 const port = process.env.PORT || 3000
@@ -19,22 +20,35 @@ expressApp.get('/', (req, res) => {
 })
 expressApp.listen(port, () => {
   console.log(`Listening on port ${port}`)
+  wakeUpDyno(process.env.DYNO_URL)
 })
 
 let bot = {};
-if (process.env.IS_PROD === true) {
-  bot = new Telegraf(process.env.BOT_TOKEN_PROD)
-} else {
-  bot = new Telegraf(process.env.BOT_TOKEN_DEV)
-}
+// if (process.env.IS_PROD === true) {
+//   bot = new Telegraf(process.env.BOT_TOKEN_PROD)
+// } else {
+// }
+bot = new Telegraf("393397340:AAHN43a40gSKoU6DByIASiMSRmhrloCuncU")
 
 const newBotBirthTime = Date.now() / 1000; // seconds
 
+let hammerTime = false;
 // Set limit to 1 message per 30 seconds
 const limitConfig = {
-  window: 3000,
+  window: 30000,
   limit: 1,
-  onLimitExceeded: (ctx) => ctx.reply("Rate limit exceeded"),
+  onLimitExceeded: (ctx) => () => {
+    if (!hammerTime) {
+      ctx.reply("Rate limit exceeded")
+      hammerTime = true;
+
+      setTimeout(() => {
+        hammerTime = false;
+      },
+        30000
+      )
+    }
+  },
 };
 // rate limit
 bot.use(rateLimit(limitConfig));
