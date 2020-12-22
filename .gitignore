@@ -130,3 +130,7 @@ jetificableGroups.json
 .env
 # Local Netlify folder
 .netlify
+
+NOCOMMIT_envSetup.sh
+ELTBOT20.zip
+

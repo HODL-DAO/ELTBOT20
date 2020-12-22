@@ -1,6 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
+// import dotenv from 'dotenv';
+// dotenv.config();
 import Telegraf, { Extra, Markup } from "telegraf";
 import { handlers } from "./handlers";
 import mongoose from "mongoose";
@@ -9,53 +8,67 @@ import { attachUser } from "./middleware";
 import {
   CacheService
 } from './services';
-import wakeUpDyno from './utils/wakeUpDyno';
-
-const express = require('express');
-const expressApp = express();
-
-const port = process.env.PORT || 3000
-expressApp.get('https://eltbot20.herokuapp.com/', (req, res) => {
-  res.send('Hello World!')
-})
-expressApp.listen(port, () => {
-  console.log(`Listening on port ${port}`)
-  wakeUpDyno(process.env.DYNO_URL)
-})
 
 let bot = {};
-// if (process.env.IS_PROD === true) {
-//   bot = new Telegraf(process.env.BOT_TOKEN_PROD)
-// } else {
-// }
-bot = new Telegraf("393397340:AAHN43a40gSKoU6DByIASiMSRmhrloCuncU")
+
+console.log('=========ENVIRONMENT=========')
+console.dir(process.env, {depth:null});
+console.log('=============================')
+//isProd?
+console.log('----------------------------------------')
+console.log(`Production Mode? : ${process.env.isProd}`)
+console.log('----------------------------------------')
+
+
+var willQuit = false;
+switch (process.env.isProd){
+  case ('true'):
+  console.log('=> Using PROD Telegram API KEY')
+  bot = new Telegraf(process.env.PROD_TELEGRAM_API_KEY);  
+  break;
+  case ('false'):
+  console.log('=> Using DEV Telegram API KEY')
+  bot = new Telegraf(process.env.DEV_TELEGRAM_API_KEY);
+  break;
+  case (process.env.isProd === undefined):
+  console.log('isProd flag not set key found in ENV!!!');
+  willQuit = true;
+  break;
+  default:
+    console.log('isProd flag not set key found in ENV!!!');
+    willQuit = true;
+  break;
+}
+if (willQuit) process.exit();
+
 
 const newBotBirthTime = Date.now() / 1000; // seconds
 
-let hammerTime = false;
-// Set limit to 1 message per 30 seconds
+var hammerTime = false;
+// Set limit to 10 message per 1 second
 const limitConfig = {
-  window: 30000,
-  limit: 1,
-  onLimitExceeded: (ctx) => () => {
-    if (!hammerTime) {
-      ctx.reply("Rate limit exceeded")
-      hammerTime = true;
-
-      setTimeout(() => {
-        hammerTime = false;
-      },
-        30000
-      )
-    }
-  },
+  window: 1000,
+  limit: 2,
+  onLimitExceeded: ( async (ctx) => {
+    console.dir(ctx, {depth:null});
+    var spamMessage = await ctx.reply("Stop Spamming The ELTBOT 🙃");
+    console.dir(spamMessage,{depth:null});
+    hammerTime = true;
+    setTimeout ( () => {
+      hammerTime = false;
+    }, 100)
+  }
+  )
 };
+  
+    
 // rate limit
 bot.use(rateLimit(limitConfig));
 
-console.log("info", "Hello World from ELTBOT20");
+console.log("info", "ELTBOT20 - Here to assist you all the way through the transition to new self sovereign future we all dreamed of in 2017...");
 
 // Connect to mongoose
+console.log(process.env)
 mongoose.connect(
   process.env.MONGO,
   {
@@ -66,9 +79,10 @@ mongoose.connect(
   },
   (err) => {
     if (err) {
+      console.log('MongoDB: [ERROR]');
       console.error(err);
     } else {
-      console.log("Connected to MongoDB");
+      console.log("MongoDB: [Connected]");
     }
   },
 );
@@ -137,6 +151,10 @@ CacheService.updateCacheData()
 // })
 
 bot.launch();
-console.log("eltcoin_beta_bot started! ");
+console.log('\n');
+console.log("===========================")
+console.log("==== ELTBOT IS ONLINE! ====");
+console.log("===========================")
+console.log('\n')
 
 export default bot;
