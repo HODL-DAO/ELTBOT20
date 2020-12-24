@@ -6,14 +6,16 @@ import mongoose from "mongoose";
 import rateLimit from "telegraf-ratelimit";
 import { attachUser } from "./middleware";
 import {
-  CacheService
+  CacheService,
+  AddressService
 } from './services';
+
 
 let bot = {};
 
-console.log('=========ENVIRONMENT=========')
-console.dir(process.env, {depth:null});
-console.log('=============================')
+// console.log('=========ENVIRONMENT=========')
+// console.dir(process.env, {depth:1});
+// console.log('=============================')
 //isProd?
 console.log('----------------------------------------')
 console.log(`Production Mode? : ${process.env.isProd}`)
@@ -113,19 +115,20 @@ CacheService.updateCacheData()
         // discard old meassages 
         if (ctx.update.message.date < newBotBirthTime) return
 
-        let loadingMsg = await ctx.replyWithHTML('🤔 checking...');
+        let loadingMsg = await ctx.replyWithHTML('🤔 checking that...');
+        
 
-        handlers.stats
-          .getStatsMessage()
-          .then(async (res) => {
-            await ctx.telegram.editMessageText(
-              loadingMsg.chat.id,
-              loadingMsg['message_id'],
-              loadingMsg['message_id'],
-              res,
-              Extra.HTML().markup()
-            );
-          })
+        handlers.stats.getStatsMessage()
+        .then(async (statsMarkup) => { 
+          //First send pic
+          await ctx.replyWithPhoto(`https://pandoon-eltcoin.icorete.ch/markets/eltcoin/chart.png?ts=${Date.now().toString()}`)
+          //Then Send Price Breakdown
+          await ctx.replyWithHTML(
+          statsMarkup,
+            Extra.HTML().markup()
+          )
+        })
+          await ctx.telegram.deleteMessage(loadingMsg.chat.id, loadingMsg['message_id'])
       });
     };
 
@@ -135,25 +138,26 @@ CacheService.updateCacheData()
         getPriceHandler()
       );
   })
-// .then((res) => {
-//   return bot.hears(/^0x[a-fA-F0-9]{40}$/g, (ctx) => {
-//     return (async function () {
-//       let addrStr = ctx.update.message.text;
-//       let addrInfo = await AddressService.getAddressData(addrStr);
+.then((res) => {
+  return bot.hears(/^0x[a-fA-F0-9]{40}$/g, (ctx) => {
+    return (async function () {
+      let addrStr = ctx.update.message.text;
+      let addrInfo = await AddressService.getAddressData(addrStr);
 
-//       console.log(' index addrInfo ', addrInfo)
+      console.log(' index addrInfo ', addrInfo)
 
-//       ctx.replyWithHTML(
-//         AddressService.getAddrInfoHTML(addrStr, addrInfo)
-//       )
-//     })();
-//   });
-// })
+      ctx.replyWithHTML(
+        AddressService.getAddrInfoHTML(addrStr, addrInfo)
+      )
+    })();
+  });
+})
 
 bot.launch();
 console.log('\n');
 console.log("===========================")
 console.log("==== ELTBOT IS ONLINE! ====");
+console.log(`========${process.env.isProd ?  ' DEV MODE =========' : ' PRODUCTION MODE ===='}`)
 console.log("===========================")
 console.log('\n')
 

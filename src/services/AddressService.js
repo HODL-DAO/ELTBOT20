@@ -29,7 +29,7 @@ const getAddrData = async (addrStr) => {
         rank: addrRank,
         balanceELT: balElt,
         balanceUSD: new Number(balElt * eltcoinInfo.priceInUSD).toFixed(2),
-        airDropBonus: addrRank.bonus,
+        airDropBonus: 'Something',
         hodlerBonus: balElt * 0.0000005,
         extra: {
           isCoreComm: (addrStr) => {
@@ -60,12 +60,13 @@ const getAddrData = async (addrStr) => {
 const getAddrInfoHTML = (addrStr, data) => {
 
   let lines = {
-    addr: `<b>Address:</b> <a href="${data.addrUrl}"><b>${addrStr}</b></a>`,
+    addr: `<b>Address:</b> <b>${addrStr}</b>`,
     balanceELT: `<b>Balance:</b> <code>${(data.balanceELT.toLocaleString("en-US"))} ELT</code> 😍`,
     balanceUSD: `<b>USD Value:</b> <code> ~$${data.balanceUSD.toLocaleString("en-US")} USD </code> 🤑`,
-    hodlerBonus: `<b>Potential ELT BURN Bonus:</b> \r <code>${data.hodlerBonus.toLocaleString("en-US")} HODL(100% bonus) @100% ELT burned</code>🔥`,
-    airDropBonus: `<b>ELTCOIN HODL-DAO AIRDROP Bonus:</b> <code>${data.airDropBonus.toLocaleString("en-US")}%</code> 🪂`,
-    rank: `<b>Rank:</b> <code>${data.rank.title}</code>`,
+    eltswapToHODL: `<b>HODL-DAO TOKEN AVAILABLE AT ELTSWAP 🔄 (With 0% ELT burn):</b> <code>${(0.0000005 * parseFloat(data.balanceELT)).toFixed(8)}</code>`,
+    hodlerBonus: `<b>Potential ELTSWAP 🔄 ELT TOKEN BURN Bonus:</b> \r <code>${data.hodlerBonus.toLocaleString("en-US")} HODL[100% bonus] for 100% ELT burned</code>🔥`,
+    airDropBonus: `<b>ELTCOIN HODL DAO AIRDROP Bonus:</b> <code>${data.airDropBonus.toLocaleString("en-US")}%</code> 🪂`,
+    // rank: `<b>Rank:</b> <code>${data.rank.title}</code>`,
     extra: `<pre>==Special Roles:==</pre> 
       ${data.extra.isCoreComm(addrStr)}
       ${data.extra.isInAirDrop(addrStr)}
@@ -73,16 +74,18 @@ const getAddrInfoHTML = (addrStr, data) => {
   }
 
   return (
-    `<pre>== OG HODLER PRIVATE HODLER REPORT ==</pre>    
+    `<pre>== HODLER ${data.rank.title} REPORT ==</pre>    
     ${lines.addr} 
+    ${lines.rank} 
     ${lines.balanceELT} 
     ${lines.balanceUSD} 
     ${lines.hodlerBonus}
-    ${lines.airDropBonus} 
-    ${lines.rank} 
-    ${lines.extra} 
+    ${lines.eltswapToHODL}
     `)
-};
+  };
+  //NOTE: Removed by me (Oli) - for now
+  // ${lines.airDropBonus} 
+  // ${lines.extra} 
 
 const getAddrRank = (addrBalance) => {
 
