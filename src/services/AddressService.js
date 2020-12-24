@@ -104,7 +104,6 @@ const getAddrRank = (addrBalance) => {
   } else if (bal >= 500000) {
     return hodlrRanks[4];
   }
-
 };
 
 export default {
